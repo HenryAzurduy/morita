@@ -1,0 +1,45 @@
+import RPi.GPIO as GPIO
+import time
+#PINES
+GPIO.setwarnings(False)
+GPIO.setmode(GPIO.BOARD)
+Led_pin1=11
+Led_pin2=13
+boton=21
+estado=0
+n=0
+#def incremento(channel):
+#	 global estado
+#	 estado+=1
+#	 estado=estado%4
+def states(n):
+	if GPIO.input(boton)==GPIO.HIGH:
+		n+=1
+	if(n==0):
+		GPIO.output(Led_pin1,GPIO.HIGH)			
+		GPIO.output(Led_pin2,GPIO.LOW)
+		time.sleep(1)
+		GPIO.output(Led_pin1,GPIO.LOW) 
+		GPIO.output(Led_pin2,GPIO.HIGH)
+		time.sleep(1)
+	elif(n==1):
+		GPIO.output(Led_pin1,GPIO.HIGH)
+		GPIO.output(Led_pin2,GPIO.HIGH)
+		time.sleep(1)
+		GPIO.output(Led_pin1,GPIO.LOW)
+		GPIO.output(Led_pin2,GPIO.LOW)
+		time.sleep(1)
+	elif(n==2):
+		GPIO.output(Led_pin1,GPIO.HIGH)
+		GPIO.output(Led_pin2,GPIO.HIGH)
+	else:
+		GPIO.output(Led_pin1,GPIO.LOW)
+		GPIO.output(Led_pin2,GPIO.LOW)
+#DECLARACION DE PINES
+GPIO.setup(Led_pin1,GPIO.OUT)
+GPIO.setup(Led_pin2,GPIO.OUT)
+GPIO.setup(boton,GPIO.IN,pull_up_down=GPIO.PUD_UP)
+#GPIO.add_event_detect(boton,GPIO.FALLING,callback=incremento,bouncetime=200)
+while(True):
+	states(n)
+GPIO.cleanup()
